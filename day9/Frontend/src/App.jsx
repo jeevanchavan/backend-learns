@@ -6,7 +6,7 @@ const App = () => {
   const [editNote, setEditNote] = useState(null)
 
   function fetchNotes(){
-    axios.get("http://localhost:3000/api/notes")  // fetch backend 
+    axios.get("https://backend-wlqk.onrender.com/api/notes")  // fetch backend 
     .then((res)=>{
       setNotes(res.data)
     })
@@ -25,7 +25,7 @@ const App = () => {
     
     console.log(title.value,description.value);
 
-    axios.post("http://localhost:3000/api/notes",{
+    axios.post("https://backend-wlqk.onrender.com/api/notes",{
       title : title.value,
       description : description.value
     })
@@ -38,7 +38,7 @@ const App = () => {
   }
 
   function handleDeleteNote(noteId){
-    axios.delete("http://localhost:3000/api/notes/"+noteId)
+    axios.delete("https://backend-wlqk.onrender.com/api/notes/"+noteId)
     .then(()=>{
       fetchNotes()
     })
@@ -46,7 +46,7 @@ const App = () => {
 
   function handleNoteUpdate(e){
     e.preventDefault()
-    axios.put("http://localhost:3000/api/notes/"+editNote._id,{
+    axios.put("https://backend-wlqk.onrender.com/api/notes/"+editNote._id,{
       title:editNote.title,
       description:editNote.description
     })
