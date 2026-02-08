@@ -15,12 +15,13 @@ html{
 }
 
 body{
-  padding: 10px;
+  padding: 1rem;
 }
 
 .notes{
   display: flex;
-  gap: 10px;
+  flex-wrap: wrap;
+  gap: 20px;
 }
 
 .note{
@@ -33,4 +34,65 @@ body{
 .note:hover{
   transform: scale(1.02);
   cursor: pointer;
+}
+
+.create-form{
+  margin-block: 1rem;
+  display: flex;
+  gap: 1rem;
+}
+
+.create-form input{
+  padding: 10px;
+  border-radius: 10px;
+  outline: none;
+  border: 1px solid white;
+  background-color: black;
+  color: white;
+}
+
+.create-btn{
+  padding: 5px 20px;
+  background-color: rgb(35, 106, 35);
+  color: white;
+  border-radius: 10px;
+  border: none;
+  outline: none;
+  cursor: pointer;
+}
+
+.update-btn{
+  padding: 10px 15px;
+  background-color: rgb(40, 28, 207);
+  color: white;
+  border-radius: 10px;
+  border: none;
+  outline: none;
+  cursor: pointer;
+}
+
+.delete-btn{
+  padding: 10px 15px;
+  background-color: rgb(206, 36, 36);
+  color: white;
+  margin-right: 5px;
+  border-radius: 10px;
+  border: none;
+  outline: none;
+  cursor: pointer;
+}
+
+.update-form{
+  margin-block: 1rem;
+  display: flex;
+  gap: 1rem;
+}
+
+.update-form input{
+  padding: 10px;
+  border-radius: 10px;
+  outline: none;
+  border: 1px solid white;
+  background-color: black;
+  color: white;
 }
