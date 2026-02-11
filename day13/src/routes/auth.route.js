@@ -1,5 +1,6 @@
 import express from 'express'
 import jwt from 'jsonwebtoken'
+import crypto from 'crypto'
 import userModel from '../models/user.model.js';
 
 const authRouter = express.Router();
@@ -17,10 +18,13 @@ authRouter.post("/register",async (req,res)=>{
         })
     }
 
+    // password hashing -> security practices
+    const hash = crypto.createHash("md5").update(password).digest("hex")
+
     const user = await userModel.create({
         name,
         email,
-        password
+        password:hash
     });
 
     const token = jwt.sign(
@@ -63,7 +67,7 @@ authRouter.post("/login",async (req,res)=>{
     })
     }
 
-    const isPasswordMatched = user.password === password;
+    const isPasswordMatched = user.password === crypto.createHash("md5").update(password).digest("hex");
     
     if(!isPasswordMatched){
         res.status(401).json({          // 401 -> unauthorized req
