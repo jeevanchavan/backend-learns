@@ -1,0 +1,20 @@
+#  FEATURES ->
+
+==> Authentication
+    => register -> (1.user ka data save karna) (2.user ko token send karna)
+    => login
+    => logout
+    => [OTP based registration] 
+
+==> Post
+    => create
+    => see the feed
+    => like posts (collection types)
+    => save post
+
+==> users
+    => followers
+    => following
+
+
+NOTE:-> [Cloud Storage Provider is -> imagekit.io]
