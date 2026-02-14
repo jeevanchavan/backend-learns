@@ -3,7 +3,7 @@
 ==> Authentication
     => register -> (1.user ka data save karna) (2.user ko token send karna)
     => login
-    => logout
+    => logout (token blacklisting)
     => [OTP based registration] 
 
 ==> Post

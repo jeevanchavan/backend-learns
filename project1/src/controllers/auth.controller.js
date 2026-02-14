@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken'
-import crypto from 'crypto'
+import bcrypt from 'bcryptjs'
 
 import userModel from '../models/user.model.js'
 
@@ -21,7 +21,7 @@ export const registerController = async (req,res)=>{
             })
         }
 
-        const hash = crypto.createHash("sha256").update(password).digest("hex")
+        const hash = bcrypt.hash(password,10)
 
         const user = await userModel.create({
             username,
@@ -39,7 +39,7 @@ export const registerController = async (req,res)=>{
             {expiresIn:"1d"}
         )
 
-        res.cookie("jwt_token",token)
+        res.cookie("token",token)
 
         res.status(201).json({
             message:"user registered successfully",
@@ -49,8 +49,7 @@ export const registerController = async (req,res)=>{
                 email:user.email,
                 bio:user.bio,
                 profileImage:user.profileImage
-            },
-            token
+            }
         })
     } catch (error) {
         res.status(500).json({message:error.message})
@@ -78,14 +77,25 @@ export const loginController = async (req,res)=>{
             })
         }
 
-        const hash = crypto.createHash("sha256").update(password).digest("hex")
-
-        const isPasswordValid = hash == user.password
+        const isPasswordValid = await bcrypt.compare(password,user.password)
+        
         if(!isPasswordValid){
             res.status(401).json({
                 message:"password invalid"
             })
         }
+
+        const token = jwt.sign(
+            { 
+                id: user._id 
+            },
+            process.env.JWT_SECRET,
+            { 
+                expiresIn: "1d" 
+            }
+        )
+
+        res.cookie("token", token)
 
         res.status(200).json({
             message:"user loggedIn successfully",
