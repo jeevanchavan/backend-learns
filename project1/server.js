@@ -1,9 +1,11 @@
+import 'dotenv/config';
+
 import app from "./src/app.js";
-import dotenv from 'dotenv'
 import connectDB from "./src/config/db.js";
 
-dotenv.config();
 connectDB();
+
+console.log("Private key:",process.env.IMAGEKIT_PRIVATE_KEY)
 
 
 app.listen(3000,()=>{
