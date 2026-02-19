@@ -1,4 +1,5 @@
 import postModel from '../models/post.model.js'
+import likeModel from '../models/like.model.js'
 import ImageKit from '@imagekit/nodejs'
 import { toFile } from '@imagekit/nodejs'
 import jwt from 'jsonwebtoken'
@@ -69,5 +70,43 @@ export const getPostDetailsController = async(req,res)=>{
     return res.status(200).json({
         message: "Post fetched Successfully",
         post
+    })
+}
+
+export const likePostController = async(req,res)=>{
+    const username = req.user.username;
+    const postId = req.params.postId;
+
+    const post = await postModel.findById(postId);
+
+    if(!postId){
+        return res.status(404).json({
+            message:"post does not exist"
+        })
+    }
+
+    const existingLike = await likeModel.findOne({
+        post : postId,
+        user : username
+    })
+
+    if(existingLike){
+        await likeModel.findOneAndDelete({
+            post : postId,
+            user : username
+        })
+        return res.status(200).json({
+            message : "post unliked"
+        })
+    }
+
+    const like = await likeModel.create({
+        post : postId,
+        user : username,
+    })
+
+    res.status(200).json({
+        message : "Post liked successfully",
+        like
     })
 }
