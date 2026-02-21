@@ -1,14 +1,15 @@
 import React from 'react'
 import {BrowserRouter,Route,Routes} from 'react-router-dom'
-import Login from './features/pages/Login'
-import Register from './features/pages/Register'
+import Login from './features/auth/pages/Login'
+import Register from './features/auth/pages/Register'
 
 const AppRoutes = () => {
   return (
     <BrowserRouter>
         <Routes>
-            <Route path='/login' element={<Login/>} />
-            <Route path='/register' element={<Register/>} />
+          <Route path='/' element={<h1>Hello Jeevan</h1>} />
+            <Route path='/login' element={<Login />} />
+            <Route path='/register' element={<Register />} />
         </Routes>
     </BrowserRouter>
   )

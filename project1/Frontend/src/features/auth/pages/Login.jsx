@@ -1,31 +1,34 @@
 import React, { useState } from 'react'
 import '../style/form.scss'
-import axios from 'axios'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { useAuth } from '../hooks/useAuth'
 
-const Register = () => {
+const Login = () => {
+
+    const {user,loading,handleLogin} = useAuth()
 
     const [username, setUsername] = useState("")
-    const [email, setEmail] = useState("");
     const [password, setPassword] = useState("")
 
-    const handleSubmit = (e)=>{
+    let navigate = useNavigate();
+
+    const handleSubmit = async (e)=>{
         e.preventDefault()
 
-        axios.post("http://localhost:3000/api/auth/register",{username,email,password},
-            {withCredentials:true}
-        )
-        .then(res => {
-            console.log(res.data)
-        })
+        await handleLogin(username,password)
+        navigate('/')
+    }
 
-        console.log(username,email,password)
+    if(loading){
+        return (<main>
+            <h1>Loading...</h1>
+        </main>)
     }
 
   return (
     <main>
         <div className="form-container">
-            <h1>Register</h1>
+            <h1>Login</h1>
             <form onSubmit={handleSubmit}>
                 <input 
                     onInput={(e)=>{
@@ -37,14 +40,6 @@ const Register = () => {
                 />
                 <input 
                     onInput={(e)=>{
-                        setEmail(e.target.value)
-                    }}
-                    type="text" 
-                    name='email' 
-                    placeholder='email' 
-                />
-                <input 
-                    onInput={(e)=>{
                         setPassword(e.target.value)
                     }}
                     type="password" 
@@ -52,12 +47,12 @@ const Register = () => {
                     placeholder='password' 
                 />
 
-                <button>Register</button>
+                <button>Login</button>
             </form>
-            <p>Already have an account? <Link className='toggleAuthForm' to='/login' >Login</Link> </p>
-        </div> 
+            <p>Don't have an account? <Link className='toggleAuthForm' to='/register' >Register</Link> </p>
+        </div>
     </main>
   )
 }
 
-export default Register
+export default Login
