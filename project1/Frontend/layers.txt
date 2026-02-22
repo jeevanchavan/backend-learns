@@ -1,0 +1,7 @@
+UI (Presentation)
+  ↓
+Hooks (Orchestration)
+  ↓
+State (Memory)
+  ↓
+API (Backend Communication)

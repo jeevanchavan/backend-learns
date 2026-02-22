@@ -5,6 +5,7 @@ import { useAuth } from '../hooks/useAuth'
 
 const Login = () => {
 
+    // eslint-disable-next-line no-unused-vars
     const {user,loading,handleLogin} = useAuth()
 
     const [username, setUsername] = useState("")
