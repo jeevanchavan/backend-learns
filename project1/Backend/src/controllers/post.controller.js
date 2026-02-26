@@ -110,3 +110,12 @@ export const likePostController = async(req,res)=>{
         like
     })
 }
+
+export const getFeedContoller = async (req,res)=>{
+    const posts = await postModel.find().populate("user")
+
+    res.status(200).json({
+        message:"posts fetched successfully",
+        posts
+    })
+}

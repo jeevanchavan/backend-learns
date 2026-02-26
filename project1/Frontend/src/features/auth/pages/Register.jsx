@@ -13,10 +13,10 @@ const Register = () => {
 
     const navigate = useNavigate()
 
-    const handleSubmit = (e)=>{
+    const handleSubmit = async (e)=>{
         e.preventDefault()
 
-        handleRegister(username,email,password)
+        await handleRegister(username,email,password)
         navigate('/')
     }
 
