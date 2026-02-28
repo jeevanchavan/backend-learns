@@ -1,4 +1,5 @@
 import userModel from '../models/user.model.js'
+import blacklistModel from '../models/blacklist.model.js'
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 
@@ -32,7 +33,7 @@ export const registerUser = async (req,res)=>{
 
     const token = jwt.sign(
         {
-            user:user._id
+            id:user._id
         },
         process.env.JWT_SECRET,
         {
@@ -60,7 +61,7 @@ export const loginUser = async (req,res)=>{
             {email},
             {username}
         ]
-    })
+    }).select("+password")
 
     if(!user){
         return res.status(400).json({
@@ -78,7 +79,7 @@ export const loginUser = async (req,res)=>{
 
     const token = jwt.sign(
         {
-            user:user._id
+            id:user._id
         },
         process.env.JWT_SECRET,
         {
@@ -96,4 +97,47 @@ export const loginUser = async (req,res)=>{
             username:user.username
         }
     })
+}
+
+export const getMeUser = async (req,res)=>{
+    const user = await userModel.findById(req.user.id)
+
+    if(!user){
+        return res.status(404).json({
+            message:"user not found"
+        })
+    }
+
+    res.status(200).json({
+        message:"user fetched successfully",
+        user
+    })
+}
+
+export const logoutUser= async (req,res)=>{
+    const token = req.cookies.token;
+
+    if(!token){
+        return res.status(400).json({
+            message:"token not provided"
+        })
+    }
+
+    try {
+        res.clearCookie("token")
+
+        await blacklistModel.create({
+            token
+        })
+
+        res.status(200).json({
+            message:"user logged out successfully"
+        })
+    } catch (error) {
+        res.status(500).json({
+            message:"server error",
+            error:error.message
+        })
+    }
+
 }
