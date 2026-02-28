@@ -9,3 +9,23 @@ export const getFeed = async ()=>{
     const response = await api.get("/feed")
     return response.data
 }
+
+export const createPost = async (caption,imageFile)=>{
+    const formData = new FormData()
+
+    formData.append("image",imageFile)
+    formData.append("caption",caption)
+
+    const response = await api.post("/",formData)
+    return response.data
+}
+
+export const likePost = async (postId)=>{
+    const response = await api.post("/like/"+postId)
+    return response.data
+}
+
+export const unLikePost = async (postId)=>{
+    const response = await api.post("/unlike/"+postId)
+    return response.data
+}

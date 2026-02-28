@@ -48,7 +48,7 @@ const Login = () => {
                     placeholder='password' 
                 />
 
-                <button>Login</button>
+                <button className='button primary-button'>Login</button>
             </form>
             <p>Don't have an account? <Link className='toggleAuthForm' to='/register' >Register</Link> </p>
         </div>
