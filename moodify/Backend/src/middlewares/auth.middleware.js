@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken'
 import blacklistModel from '../models/blacklist.model.js';
+import redis from '../config/cache.js';
 
 const authMiddleware = async (req,res,next)=>{
     const token = req.cookies.token;
@@ -11,9 +12,7 @@ const authMiddleware = async (req,res,next)=>{
     }
 
     // check
-    const isTokenBlacklisted = await blacklistModel.findOne({
-        token
-    })
+    const isTokenBlacklisted = await redis.get(token)
 
     if(isTokenBlacklisted){
         return res.status(401).json({
