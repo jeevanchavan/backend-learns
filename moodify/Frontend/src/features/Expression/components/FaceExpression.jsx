@@ -33,7 +33,8 @@ export default function FaceExpression() {
                 playsInline
             />
             <h2>{expression}</h2>
-            <button onClick={()=>{detect({landmarkerRef,videoRef,setExpression})}} >Detect expression</button>
+            <button className="button button-primary btn-margin"
+             onClick={()=>{detect({landmarkerRef,videoRef,setExpression})}} >Detect expression</button>
         </div>
     );
 }

@@ -1,10 +1,15 @@
 import './App.css'
-import FaceExpression from './features/Expression/components/FaceExpression'
+import AppRoutes from './AppRoutes'
+import { AuthContext, AuthProvider } from './features/auth/auth.context'
+import './features/shared/global.scss'
 
 function App() {
 
   return (
-    <FaceExpression/>
+    <AuthProvider>
+      <AppRoutes />
+
+    </AuthProvider>
   )
 }
 

@@ -1,0 +1,23 @@
+.button{
+    border: none;
+    outline: none;
+    padding: 1rem 2rem;
+    background-color: rgb(228, 228, 228);
+    color: black;
+    border-radius: 1rem;
+    font-weight: 600;
+    font-size: medium;
+    cursor: pointer;
+    transition: all 0.5s ease-in;
+
+    &.button-primary{
+        background-color: rgb(212, 212, 212) ;
+    }
+    &.btn-margin{
+        margin-top: 1rem;
+    }
+
+    &:active{
+        transform: scale(0.95);
+    }
+}
