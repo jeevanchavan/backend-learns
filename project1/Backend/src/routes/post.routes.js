@@ -1,7 +1,7 @@
 import express from "express"
 import multer from 'multer'
 
-import { createPostController, getFeedContoller, getPostController, getPostDetailsController, likePostController, savePostController, unLikePostController } from "../controllers/post.controller.js";
+import { createPostController, getFeedContoller, getPostController, getPostDetailsController, likePostController, savePostController, unLikePostController, UnSavePostController } from "../controllers/post.controller.js";
 import { identifyUser } from "../middlewares/auth.middleware.js";
 
 const upload = multer({storage:multer.memoryStorage()})
@@ -34,6 +34,7 @@ postRouter.post("/like/:postId",identifyUser,likePostController)
 postRouter.post("/unlike/:postId",identifyUser,unLikePostController)
 
 postRouter.post("/save/:postId",identifyUser,savePostController);
+postRouter.post("/unsave/:postId",identifyUser,UnSavePostController)
 
 /**
  * @route GET /api/posts/feed

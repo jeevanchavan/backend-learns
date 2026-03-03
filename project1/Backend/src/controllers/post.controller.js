@@ -157,6 +157,28 @@ export const savePostController = async (req,res)=>{
     })
 }
 
+export const UnSavePostController = async(req,res)=>{
+    const username = req.user.username
+    const postId = req.params.postId
+
+    const isSaved = await saveModel.findOne({
+        user:username,
+        post:postId
+    })
+
+    if(!isSaved){
+        return res.status(404).json({
+            messgae:"post is not saved"
+        })
+    }
+
+    await saveModel.findOneAndDelete({_id:isSaved._id})
+
+    res.status(200).json({
+        message:"post unsaved successfully"
+    })
+}
+
 export const getFeedContoller = async (req,res)=>{
     const user = req.user;
 
@@ -173,7 +195,7 @@ export const getFeedContoller = async (req,res)=>{
                 user:user.username,
                 post:post._id
             })
-            post.isSaved = !!isSaved
+            post.isSaved = Boolean(isSaved)
 
             return post
         }))
