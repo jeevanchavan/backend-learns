@@ -3,6 +3,7 @@ import likeModel from '../models/like.model.js'
 import ImageKit from '@imagekit/nodejs'
 import { toFile } from '@imagekit/nodejs'
 import jwt from 'jsonwebtoken'
+import saveModel from '../models/save.model.js'
 
 
 const imagekit = new ImageKit({
@@ -79,7 +80,7 @@ export const likePostController = async(req,res)=>{
 
     const post = await postModel.findById(postId);
 
-    if(!postId){
+    if(!post){
         return res.status(404).json({
             message:"post does not exist"
         })
@@ -133,6 +134,29 @@ export const unLikePostController = async (req,res)=>{
     })
 }
 
+export const savePostController = async (req,res)=>{
+    const username = req.user.username
+    const postId = req.params.postId
+
+    const post = await postModel.findById(postId)
+
+    if(!post){
+        return res.status(404).json({
+            message:"post doesn't exists "
+        })
+    }
+
+    const save = await saveModel.create({
+        post:postId,
+        user:username
+    })
+
+    res.status(200).json({
+        message:"post saved successfully",
+        save
+    })
+}
+
 export const getFeedContoller = async (req,res)=>{
     const user = req.user;
 
@@ -144,6 +168,12 @@ export const getFeedContoller = async (req,res)=>{
                 post:post._id
             })
             post.isLiked = Boolean(isLiked)
+
+            const isSaved = await saveModel.findOne({
+                user:user.username,
+                post:post._id
+            })
+            post.isSaved = !!isSaved
 
             return post
         }))
