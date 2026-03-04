@@ -12,7 +12,9 @@ app.use(cors({
 }))
 
 import authRouter from './routes/user.routes.js';
+import songRouter from './routes/song.routes.js'
 
 app.use('/api/auth',authRouter)
+app.use("/api/songs",songRouter)
 
 export default app;
