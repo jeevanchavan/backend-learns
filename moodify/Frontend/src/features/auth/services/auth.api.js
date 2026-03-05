@@ -24,14 +24,14 @@ export const register = async (username,email,password)=>{
     return response.data
 }
 
-export const getMe =async ()=>{
-    const response = await api.get('/get-me')
+// export const getMe =async ()=>{
+//     const response = await api.get('/get-me')
 
-    return response.data
-}
+//     return response.data
+// }
 
-export const logout = async ()=>{
-    const response = await api.get('/logout')
+// export const logout = async ()=>{
+//     const response = await api.get('/logout')
 
-    return response.data
-}
+//     return response.data
+// }
