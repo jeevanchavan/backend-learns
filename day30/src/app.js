@@ -10,5 +10,5 @@ import authRouter from './routes/auth.routes.js';
 app.use("/api/auth",authRouter)
 
 
-app.use(errorHandle)
+// app.use(errorHandle)
 export default app;
