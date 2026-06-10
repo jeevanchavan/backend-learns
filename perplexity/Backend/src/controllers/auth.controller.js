@@ -62,7 +62,7 @@ export async function loginUser(req,res){
     const user = await userModel.findOne({email})
 
     if(!user){
-        return res.status(400).json({
+        return res.status(401).json({
             message:"Invlaid email or password",
             success:false,
             err:"User not found"
@@ -72,7 +72,7 @@ export async function loginUser(req,res){
     const isPasswordMatch = await user.comparePassword(password)
 
     if(!isPasswordMatch){
-        return res.status(400).json({
+        return res.status(401).json({
             message:"invalid email or password",
             success:false,
             err:"Incorrect password"
@@ -80,7 +80,7 @@ export async function loginUser(req,res){
     }
 
     if (!user.verified) {
-        return res.status(400).json({
+        return res.status(401).json({
             message: "Please verify your email before logging in",
             success: false,
             err: "Email not verified"
@@ -175,3 +175,4 @@ export async function verifyEmail(req,res){
         })
     }
 }
+
