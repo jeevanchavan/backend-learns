@@ -11,9 +11,9 @@ export const sendMessage = async (req,res)=>{
         
         if(!chatId){
             
-            const title = await generateChatTitle(message);
+            title = await generateChatTitle(message);
             
-            const chat = await chatModel.create({
+            chat = await chatModel.create({
                 user : req.user.id,
                 title
             })
