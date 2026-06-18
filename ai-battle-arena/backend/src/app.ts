@@ -1,16 +1,39 @@
-import express from 'express'
-import useGraph from './services/graph.ai.service.js'
+import express from "express";
+import battleRouter from "./routes/battle.route.js";
+import leaderboardRouter from "./routes/leaderboard.route.js";
+import { errorHandler } from "./middleware/errorHandler.middleware.js";
 
-const app = express()
+const app = express();
 
-app.get("/health",(req,res)=>{
-    res.json({
-        message:"All Good"
-    })
-})
+// Middleware
+app.use(express.json());
 
-app.post("/use-graph",async (req,res)=>{
-    await useGraph("Write the code for majority element in an array in javascript and how many ways to find the majority element?")
-})
+// CORS configuration middleware (allows React frontend to connect)
+app.use((req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  
+  if (req.method === "OPTIONS") {
+    res.sendStatus(204);
+  } else {
+    next();
+  }
+});
+
+// Health check endpoint
+app.get("/health", (req, res) => {
+  res.status(200).json({
+    success: true,
+    message: "All Good",
+  });
+});
+
+// Routes
+app.use("/api/battles", battleRouter);
+app.use("/api/leaderboard", leaderboardRouter);
+
+// Centralized error handling middleware (must be registered last)
+app.use(errorHandler);
 
 export default app;

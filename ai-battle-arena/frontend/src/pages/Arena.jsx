@@ -4,25 +4,29 @@ import { Send, Trophy, Loader2, Sparkles, AlertCircle } from "lucide-react";
 import clsx from "clsx";
 import { Button } from "../components/Button";
 import { Card } from "../components/Card";
-import { MOCK_CURRENT_BATTLE } from "../utils/mockData";
+import { createBattle } from "../utils/api";
 
 export function Arena() {
   const [prompt, setPrompt] = useState("");
   const [status, setStatus] = useState("empty"); // empty, loading, done
   const [data, setData] = useState(null);
+  const [error, setError] = useState(null);
 
-  const handleStartBattle = () => {
+  const handleStartBattle = async () => {
     if (!prompt.trim()) return;
     
     setStatus("loading");
+    setError(null);
+    setData(null);
     
-    // Mock network request / generation time
-    setTimeout(() => {
-      // If the user typed the exact mock prompt, show the mock data
-      // Otherwise just use mock data anyway for demo purposes
-      setData({ ...MOCK_CURRENT_BATTLE, problem: prompt });
+    try {
+      const result = await createBattle(prompt);
+      setData(result.data);
       setStatus("done");
-    }, 2500);
+    } catch (err) {
+      setError(err.message || "An error occurred during the battle");
+      setStatus("empty");
+    }
   };
 
   const handleKeyDown = (e) => {
@@ -33,15 +37,18 @@ export function Arena() {
   };
 
   const handleExample = () => {
-    setPrompt(MOCK_CURRENT_BATTLE.problem);
+    setPrompt("Explain Docker Compose vs Kubernetes in simple terms.");
   };
 
   const determineWinner = () => {
     if (!data) return null;
-    const { solution_1_score, solution_2_score } = data.judge;
-    if (solution_1_score > solution_2_score) return { name: "Mistral AI", score: solution_1_score };
-    if (solution_2_score > solution_1_score) return { name: "Cohere AI", score: solution_2_score };
-    return { name: "Tie", score: solution_1_score };
+    const name = data.winner;
+    const score = name === "Mistral AI" 
+      ? data.judge.solution_1_score 
+      : name === "Cohere AI" 
+      ? data.judge.solution_2_score 
+      : data.judge.solution_1_score;
+    return { name, score };
   };
 
   const winner = determineWinner();
@@ -92,6 +99,13 @@ export function Arena() {
           </div>
         </div>
       </section>
+
+      {error && (
+        <div className="bg-red-500/10 border border-red-500/20 text-red-400 p-4 rounded-xl flex items-center gap-3 max-w-3xl mx-auto">
+          <AlertCircle className="h-5 w-5 flex-shrink-0 text-red-500" />
+          <p className="text-sm font-medium text-red-400">{error}</p>
+        </div>
+      )}
 
       {/* Battle Flow Indicator (only show when loading or done) */}
       {status !== "empty" && (
